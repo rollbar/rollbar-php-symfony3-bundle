@@ -1,0 +1,5 @@
+rollbar:
+    enabled: true
+    access_token: ~ # pulled from phpunit.xml
+    environment: 'rollbar-php-symfony-test-app'
+    minimum_level: 'info'

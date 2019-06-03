@@ -31,6 +31,7 @@ matrix:
 
 before_install:
   - composer self-update
+  - composer clear-cache
   - composer require -n --prefer-dist "symfony/symfony:${SYMFONY_VERSION}"
 
 script:

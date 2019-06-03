@@ -1,9 +1,7 @@
 imports:
     - { resource: config.yml }
     - { resource: parameters.yml }
-
-rollbar:
-    access_token: ~
+    - { resource: packages/rollbar.yml }
 
 monolog:
     handlers:
@@ -12,7 +10,7 @@ monolog:
             id: Rollbar\Monolog\Handler\RollbarHandler
 
 services:
-    _defaults:
-        public: true
-
     test.Rollbar\Symfony\RollbarBundle\Payload\Generator: '@Rollbar\Symfony\RollbarBundle\Payload\Generator'
+    test_alias.logger:
+        alias: 'logger'
+        public: true
