@@ -35,15 +35,24 @@ class RollbarHandlerFactory
                 $config['person_fn'] = function () use ($container) {
                     try {
                         $token = $container->get('security.token_storage')->getToken();
-
+                        
                         if ($token) {
                             $user = $token->getUser();
-                            $serializer = $container->get('serializer');
+                            if($container->has('serializer')) {
+                                $serializer = $container->get('serializer');
+                            } elseif($container->has('jms_serializer')) {
+                                $serializer = $container->get('jms_serializer');
+                            } else {
+                                throw new ServiceNotFoundException('serializer');
+                            }
                             $person = \json_decode($serializer->serialize($user, 'json'), true);
                             return $person;
                         }
                     } catch (\Exception $exception) {
-                        // Ignore
+                        // Ignore all except serializer
+                        if($exception instanceof ServiceNotFoundException) {
+                            throw $exception;
+                        }
                     }
                 };
             }
